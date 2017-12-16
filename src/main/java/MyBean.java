@@ -2,9 +2,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by gadzik on 15.12.17.
- */
 public class MyBean {
     public boolean getTrue() {
         return true;
@@ -23,7 +20,7 @@ public class MyBean {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
 
-        String sql = "SELECT email FROM  ACCOUNT ";
+            String sql = "SELECT email FROM  ACCOUNT ";
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 String email = rs.getString("email");
