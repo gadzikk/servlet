@@ -4,12 +4,12 @@
 <p><%=request.getAttribute("message")%></p>
 ${message}
 
-<form action = "main.jsp" method = "GET">
-    First Name: <input type = "text" name = "email">
+<form action = "${pageContext.request.contextPath}/control" method = "GET">
+    id: <input type = "text" name = "id">
     <br />
-    METHOD: <input type = "text" name = "method" />
-    <br />
-    Rest : <input type = "text" name = "rest" />
+    <input type = "hidden" name = "method" value="getbyid" />
+    <input type = "hidden" name = "rest" value="account" />
+    <input type = "hidden" name = "page" value="main.jsp" />
     <input type = "submit" value = "Submit" />
 </form>
 
