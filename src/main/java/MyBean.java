@@ -3,32 +3,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyBean {
+
+
     public boolean getTrue() {
         return true;
     }
 
-    public List<String> connectionWithDB() {
-        List<String> list = new ArrayList<String>();
+    public FrontData connectionWithDB(String method, Parameters params) {
+        AccountRepository accountRepository = new AccountFacade();
+        FrontData accountData = new FrontData();
+//        List<String> list = new ArrayList<String>();
         final String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
         final String USER = "postgres";
         final String PASS = "postgres";
 
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             Class.forName("org.postgresql.Driver");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            stmt = conn.createStatement();
 
-            String sql = "SELECT email FROM  ACCOUNT ";
-            ResultSet rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                String email = rs.getString("email");
-                list.add(email);
+            if ("getall".equals(method)) {
+                stmt = conn.prepareStatement("SELECT email FROM  ACCOUNT");
+                accountData.accounts = accountRepository.getAll(stmt);
 
-                System.out.println(email);
+            } else if ("getbyid".equals(method)) {
+                stmt = conn.prepareStatement("SELECT email FROM  ACCOUNT where id = ?");
+                accountData.account = accountRepository.getById(stmt, params);
             }
-            rs.close();
+
+
+//            String sql = "SELECT email FROM  ACCOUNT ";
+//            ResultSet rs = stmt.executeQuery(sql);
+//            while (rs.next()) {
+//                String email = rs.getString("email");
+//                list.add(email);
+//
+//                System.out.println(email);
+//            }
+//            rs.close();
 
         } catch (SQLException se) {
             se.printStackTrace();
@@ -46,7 +59,7 @@ public class MyBean {
             } catch (SQLException se) {
             }
 
-            return list;
+            return accountData;
         }
     }
 }
