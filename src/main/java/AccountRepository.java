@@ -1,6 +1,5 @@
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 /**
@@ -9,6 +8,6 @@ import java.util.List;
 public interface AccountRepository {
     void create();
     void update();
-    List<String> getAll(PreparedStatement stmt) throws SQLException;
-    String getById(PreparedStatement stmt,Parameters params) throws SQLException;
+    List<Account> getAll(PreparedStatement stmt) throws SQLException;
+    Account getById(PreparedStatement stmt,Parameters params) throws SQLException;
 }

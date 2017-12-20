@@ -1,25 +1,27 @@
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * Created by gadzik on 18.12.17.
  */
 public class FrontData {
-    String account;
-    List<String> accounts;
 
-    public String getAccount() {
+    private Account account;
+    private List<Account> accounts;
+
+    public Account getAccount() {
         return account;
     }
 
-    public void setAccount(String account) {
+    public void setAccount(Account account) {
         this.account = account;
     }
 
-    public List<String> getAccounts() {
+    public List<Account> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(List<String> accounts) {
+    public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
 }

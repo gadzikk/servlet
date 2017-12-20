@@ -12,5 +12,13 @@
 </head>
 <body>
 
+<form action = "${pageContext.request.contextPath}/control" method = "GET">
+    <br />
+    <input type = "hidden" name = "method" value="getall" />
+    <input type = "hidden" name = "rest" value="account" />
+    <input type = "hidden" name = "page" value="main.jsp" />
+    <input type = "submit" value = "Submit" />
+</form>
+
 </body>
 </html>

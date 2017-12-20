@@ -17,31 +17,32 @@ public class AccountFacade implements AccountRepository {
 
     }
 
-    public String getById(PreparedStatement stmt, Parameters params) throws SQLException {
+    public Account getById(PreparedStatement stmt, Parameters params) throws SQLException {
         stmt.setLong(1, params.getId());
-        String email = null;
+        Account account = new Account();
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            email = rs.getString("email");
-            System.out.println(email);
+            account.setId(rs.getLong("id"));
+            account.setEmail(rs.getString("email"));
+            account.setMoney(rs.getBigDecimal("money"));
+            account.setCreationDate(rs.getDate("creation_date"));
         }
         rs.close();
-
-
-        return email;
+        return account;
     }
 
-    public List<String> getAll(PreparedStatement stmt) throws SQLException {
-        List<String> list = new ArrayList<String>();
-
-//         sql = "SELECT email FROM  ACCOUNT ";
+    public List<Account> getAll(PreparedStatement stmt) throws SQLException {
+        List<Account> result = new ArrayList<Account>();
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-            String email = rs.getString("email");
-            list.add(email);
-            System.out.println(email);
+            Account account = new Account();
+            account.setId(rs.getLong("id"));
+            account.setEmail(rs.getString("email"));
+            account.setMoney(rs.getBigDecimal("money"));
+            account.setCreationDate(rs.getDate("creation_date"));
+            result.add(account);
         }
         rs.close();
-        return list;
+        return result;
     }
 }
