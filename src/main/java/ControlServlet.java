@@ -26,13 +26,16 @@ public class ControlServlet extends HttpServlet {
     private void RestGet(String rest, String method, Parameters params) {
         if ("account".equals(rest)) {
             FrontData data = new AccountDB().getConnection(method, params);
-            if(data.getAccount() !=null){
+            if (data.getAccount() != null) {
                 LOGGER.info(data.getAccount().toString());
             }
-            if(data.getAccounts() !=null){
+            if (data.getAccounts() != null) {
                 LOGGER.info(data.getAccounts().toString());
             }
-//            LOGGER.info(data.getAccounts().toString());
+        } else if ("person".equals(rest)) {
+            PersonData data = new PersonDB().getConnection(method, params);
+            LOGGER.info(data.getPersons().toString());
+
         }
     }
 
