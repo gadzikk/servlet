@@ -1,3 +1,5 @@
+package model;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -46,7 +48,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" +
+        return "model.Account{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", creationDate='" + creationDate + '\'' +

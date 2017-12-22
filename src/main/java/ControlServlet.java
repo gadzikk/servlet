@@ -1,3 +1,9 @@
+import db.AccountDB;
+import db.Parameters;
+import db.PersonDB;
+import front.FrontData;
+import front.PersonData;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,11 +25,11 @@ public class ControlServlet extends HttpServlet {
                 .id(request.getParameter("id"))
                 .build();
 
-        RestGet(request.getParameter("rest"), request.getParameter("method"), params);
+        RestGet(request, request.getParameter("rest"), request.getParameter("method"), params);
         forward(request.getParameter("page"), request, response);
     }
 
-    private void RestGet(String rest, String method, Parameters params) {
+    private void RestGet(HttpServletRequest request, String rest, String method, Parameters params) {
         if ("account".equals(rest)) {
             FrontData data = new AccountDB().getConnection(method, params);
             if (data.getAccount() != null) {
@@ -35,6 +41,7 @@ public class ControlServlet extends HttpServlet {
         } else if ("person".equals(rest)) {
             PersonData data = new PersonDB().getConnection(method, params);
             LOGGER.info(data.getPersons().toString());
+            request.getSession().setAttribute("persondata",data);
 
         }
     }

@@ -1,3 +1,5 @@
+package db;
+
 /**
  * Created by gadzik on 18.12.17.
  */

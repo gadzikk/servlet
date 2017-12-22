@@ -1,3 +1,5 @@
+package model;
+
 import java.util.Date;
 
 /**
@@ -44,7 +46,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "model.Person{" +
                 "id=" + id +
                 ", date=" + date +
                 ", name='" + name + '\'' +
