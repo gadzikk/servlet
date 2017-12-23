@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by gadzik on 18.12.17.
  */
-public class FrontData {
+public class AccountData {
 
     private Account account;
     private List<Account> accounts;

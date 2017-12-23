@@ -9,8 +9,8 @@ import java.util.List;
  */
 public class PersonData {
 
-    List<Person> persons;
-    Person person;
+    private List<Person> persons;
+    private Person person;
 
     public List<Person> getPersons() {
         return persons;

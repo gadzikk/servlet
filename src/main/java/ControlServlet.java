@@ -1,7 +1,7 @@
 import db.AccountDB;
 import db.Parameters;
 import db.PersonDB;
-import front.FrontData;
+import front.AccountData;
 import front.PersonData;
 
 import javax.servlet.ServletException;
@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -25,13 +26,13 @@ public class ControlServlet extends HttpServlet {
                 .id(request.getParameter("id"))
                 .build();
 
-        RestGet(request, request.getParameter("rest"), request.getParameter("method"), params);
+        try {RestGet(request, request.getParameter("rest"), request.getParameter("method"), params);} catch (SQLException e) {e.printStackTrace();}
         forward(request.getParameter("page"), request, response);
     }
 
-    private void RestGet(HttpServletRequest request, String rest, String method, Parameters params) {
+    private void RestGet(HttpServletRequest request, String rest, String method, Parameters params) throws SQLException {
         if ("account".equals(rest)) {
-            FrontData data = new AccountDB().getConnection(method, params);
+            AccountData data = new AccountDB().getById(params);
             if (data.getAccount() != null) {
                 LOGGER.info(data.getAccount().toString());
             }
@@ -39,9 +40,9 @@ public class ControlServlet extends HttpServlet {
                 LOGGER.info(data.getAccounts().toString());
             }
         } else if ("person".equals(rest)) {
-            PersonData data = new PersonDB().getConnection(method, params);
+            PersonData data = new PersonDB().getAll();
             LOGGER.info(data.getPersons().toString());
-            request.getSession().setAttribute("persondata",data);
+            request.getSession().setAttribute("persondata", data);
 
         }
     }
