@@ -11,12 +11,9 @@ import java.util.List;
 /**
  * Created by gadzik on 21.12.17.
  */
-public class PersonFacade implements PersonRepository {
-    public List<Person> getAll() {
-        return null;
-    }
+public class PersonJDBC implements PersonRepository {
 
-    public Person getById(PreparedStatement stmt, Parameters params) throws SQLException {
+    public Person exectueGetById(PreparedStatement stmt, Parameters params) throws SQLException {
         stmt.setLong(1, params.getId());
         ResultSet rs = stmt.executeQuery();
         Person person = new Person();
@@ -29,7 +26,7 @@ public class PersonFacade implements PersonRepository {
         return person;
     }
 
-    public List<Person> getAll(PreparedStatement stmt) throws SQLException {
+    public List<Person> exectueGetAll(PreparedStatement stmt) throws SQLException {
         ResultSet rs = stmt.executeQuery();
         List<Person> result = new ArrayList<Person>();
         while (rs.next()){

@@ -1,6 +1,5 @@
 package db;
 
-import front.PersonData;
 import model.Person;
 
 import java.sql.Connection;
@@ -12,25 +11,19 @@ import java.util.List;
 /**
  * Created by gadzik on 21.12.17.
  */
-public class PersonDB {
+public class PersonDaoImp implements PersonDao {
+
+    private PersonRepository repository = new PersonJDBC();
     private static Connection conn;
-    private PersonRepository repository = new PersonFacade();
 
-
-    public PersonData getAll() throws SQLException {
-        PersonData data = new PersonData();
-        PreparedStatement stmt = getConn().prepareStatement("SELECT * FROM PERSON");
-        List<Person> persons = repository.getAll(stmt);
-        data.setPersons(persons);
-        return data;
+    public Person getById(Parameters params) throws SQLException {
+        PreparedStatement stmt = getConn().prepareStatement("SELECT * FROM PERSON WHERE ID = ?");
+        return repository.exectueGetById(stmt, params);
     }
 
-    public PersonData getById(Parameters params) throws SQLException {
-        PersonData data = new PersonData();
-        PreparedStatement stmt = getConn().prepareStatement("SELECT * FROM PERSON WHERE ID = ?");
-        Person person = repository.getById(stmt, params);
-        data.setPerson(person);
-        return data;
+    public List<Person> getAll() throws SQLException {
+        PreparedStatement stmt = getConn().prepareStatement("SELECT * FROM PERSON");
+        return repository.exectueGetAll(stmt);
     }
 
     private Connection getConn() {

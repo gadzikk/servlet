@@ -11,14 +11,7 @@ import java.util.List;
 /**
  * Created by gadzik on 16.12.17.
  */
-public class AccountFacade implements AccountRepository {
-    public void create() {
-
-    }
-
-    public void update() {
-
-    }
+public class AccountJDBC implements AccountRepository {
 
     public Account getById(PreparedStatement stmt, Parameters params) throws SQLException {
         stmt.setLong(1, params.getId());

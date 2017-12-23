@@ -1,8 +1,13 @@
-import db.AccountDB;
+import db.AccountDaoImp;
 import db.Parameters;
-import db.PersonDB;
+import db.PersonDaoImp;
 import front.AccountData;
 import front.PersonData;
+import model.Account;
+import service.AccountService;
+import service.AccountServiceImp;
+import service.PersonService;
+import service.PersonServiceImp;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,21 +31,28 @@ public class ControlServlet extends HttpServlet {
                 .id(request.getParameter("id"))
                 .build();
 
-        try {RestGet(request, request.getParameter("rest"), request.getParameter("method"), params);} catch (SQLException e) {e.printStackTrace();}
+        try {
+            RestGet(request, request.getParameter("rest"), request.getParameter("method"), params);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         forward(request.getParameter("page"), request, response);
     }
 
     private void RestGet(HttpServletRequest request, String rest, String method, Parameters params) throws SQLException {
         if ("account".equals(rest)) {
-            AccountData data = new AccountDB().getById(params);
-            if (data.getAccount() != null) {
-                LOGGER.info(data.getAccount().toString());
+            AccountService accountService = new AccountServiceImp();
+            if ("getbyid".equals(method)) {
+                AccountData accountData = new AccountData();
+                accountData.setAccount(accountService.getById(params));
+                LOGGER.info(accountData.getAccount().toString());
             }
-            if (data.getAccounts() != null) {
-                LOGGER.info(data.getAccounts().toString());
-            }
+
+
         } else if ("person".equals(rest)) {
-            PersonData data = new PersonDB().getAll();
+            PersonService personService = new PersonServiceImp();
+            PersonData data = new PersonData();
+            data.setPersons(personService.getAll());
             LOGGER.info(data.getPersons().toString());
             request.getSession().setAttribute("persondata", data);
 
