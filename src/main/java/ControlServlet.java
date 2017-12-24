@@ -31,15 +31,11 @@ public class ControlServlet extends HttpServlet {
                 .id(request.getParameter("id"))
                 .build();
 
-        try {
-            RestGet(request, request.getParameter("rest"), request.getParameter("method"), params);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        RestGet(request, request.getParameter("rest"), request.getParameter("method"), params);
         forward(request.getParameter("page"), request, response);
     }
 
-    private void RestGet(HttpServletRequest request, String rest, String method, Parameters params) throws SQLException {
+    private void RestGet(HttpServletRequest request, String rest, String method, Parameters params) {
         if ("account".equals(rest)) {
             AccountService accountService = new AccountServiceImp();
             if ("getbyid".equals(method)) {
@@ -47,8 +43,6 @@ public class ControlServlet extends HttpServlet {
                 accountData.setAccount(accountService.getById(params));
                 LOGGER.info(accountData.getAccount().toString());
             }
-
-
         } else if ("person".equals(rest)) {
             PersonService personService = new PersonServiceImp();
             PersonData data = new PersonData();
