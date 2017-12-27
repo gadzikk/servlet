@@ -26,36 +26,36 @@
     <div id="messageDiv"></div>
 </center>
 <script>
-    $("#login").on('click', function(){
+    $("#login").on('click', function () {
+        callAjax();
+    });
+
+
+    function callAjax() {
         var username = $("#username").val();
         var password = $("#password").val();
-        if(username == ""){
-            $('#messageDiv').css("display","none");
+        if (username == "") {
+            $('#messageDiv').css("display", "none");
             alert("Username is required");
             return;
         }
-        if(password == ""){
-            $('#messageDiv').css("display","none");
+        if (password == "") {
+            $('#messageDiv').css("display", "none");
             alert("Password is required");
             return;
         }
-        $.ajax({
-            url : "${pageContext.request.contextPath}/ajax",
-            method : 'GET',
-            data : {
-                username : username,
-                password : password
-            },
-            success : function(results){
-                    showMessage(results);
-            }
+        $.get("${pageContext.request.contextPath}/ajax", {
+            username: username,
+            password: password
+        }, function (response) {
+            showMessage(response);
         });
-    });
+    }
 
     //function to display message to the user
-    function showMessage(results){
+    function showMessage(results) {
         var message = results;
-            $('#messageDiv').text(message);
+        $('#messageDiv').text(message);
     }
 </script>
 </body>
