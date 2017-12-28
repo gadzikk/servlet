@@ -39,4 +39,19 @@ public class PersonJDBC implements PersonRepository {
         }
         return result;
     }
+
+    public List<Person> executeGetBySurname(PreparedStatement stmt,Parameters params) throws SQLException {
+        stmt.setString(1, "%" + params.getName() + "%");
+        ResultSet rs = stmt.executeQuery();
+        List<Person> result = new ArrayList<Person>();
+        while (rs.next()){
+            Person person = new Person();
+            person.setId(rs.getLong("id"));
+            person.setDate(rs.getDate("dob"));
+            person.setLastname(rs.getString("lname"));
+            person.setName(rs.getString("name"));
+            result.add(person);
+        }
+        return result;
+    }
 }

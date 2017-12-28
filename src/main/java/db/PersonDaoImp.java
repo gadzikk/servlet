@@ -26,6 +26,11 @@ public class PersonDaoImp implements PersonDao {
         return repository.exectueGetAll(stmt);
     }
 
+    public List<Person> getPersonsBySurname(Parameters params) throws SQLException {
+        PreparedStatement stmt = getConn().prepareStatement("SELECT * FROM PERSON WHERE LNAME LIKE ?");
+        return repository.executeGetBySurname(stmt,params);
+    }
+
     private Connection getConn() {
         final String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
         final String USER = "postgres";

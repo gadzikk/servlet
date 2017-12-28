@@ -30,4 +30,13 @@ public class PersonServiceImp implements PersonService{
         }
         return null;
     }
+
+    public List<Person> getPersonsBySurname(Parameters params){
+        try {
+            return personDao.getPersonsBySurname(params);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
