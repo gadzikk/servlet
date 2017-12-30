@@ -29,7 +29,7 @@ public class PersonJDBC implements PersonRepository {
     public List<Person> exectueGetAll(PreparedStatement stmt) throws SQLException {
         ResultSet rs = stmt.executeQuery();
         List<Person> result = new ArrayList<Person>();
-        while (rs.next()){
+        while (rs.next()) {
             Person person = new Person();
             person.setId(rs.getLong("id"));
             person.setLastname(rs.getString("lname"));
@@ -40,11 +40,11 @@ public class PersonJDBC implements PersonRepository {
         return result;
     }
 
-    public List<Person> executeGetBySurname(PreparedStatement stmt,Parameters params) throws SQLException {
+    public List<Person> executeGetBySurname(PreparedStatement stmt, Parameters params) throws SQLException {
         stmt.setString(1, "%" + params.getName() + "%");
         ResultSet rs = stmt.executeQuery();
         List<Person> result = new ArrayList<Person>();
-        while (rs.next()){
+        while (rs.next()) {
             Person person = new Person();
             person.setId(rs.getLong("id"));
             person.setDate(rs.getDate("dob"));
@@ -53,5 +53,41 @@ public class PersonJDBC implements PersonRepository {
             result.add(person);
         }
         return result;
+    }
+
+    public List<Person> executeGetBySurnameWithPagination(PreparedStatement stmt, Parameters params) throws SQLException {
+        stmt.setString(1, "%" + params.getName() + "%");
+        stmt.setInt(2, 10);
+        stmt.setInt(3, (params.getPage() - 1) * 10);
+        ResultSet rs = stmt.executeQuery();
+        List<Person> result = new ArrayList<Person>();
+        while (rs.next()) {
+            Person person = new Person();
+            person.setId(rs.getLong("id"));
+            person.setDate(rs.getDate("dob"));
+            person.setLastname(rs.getString("lname"));
+            person.setName(rs.getString("name"));
+            result.add(person);
+        }
+        return result;
+    }
+
+    public Integer executeCountPersons(PreparedStatement stmt) throws SQLException {
+        ResultSet rs = stmt.executeQuery();
+        int total = 0;
+        while (rs.next()) {
+            total = rs.getInt(1);
+        }
+        return total;
+    }
+
+    public Integer executeCountPersonsBySurname(PreparedStatement stmt, Parameters params) throws SQLException {
+        stmt.setString(1,"%" + params.getName() + "%");
+        ResultSet rs = stmt.executeQuery();
+        int total = 0;
+        while (rs.next()) {
+            total = rs.getInt(1);
+        }
+        return total;
     }
 }

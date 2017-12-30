@@ -11,6 +11,7 @@ public class PersonData {
 
     private List<Person> persons;
     private Person person;
+    private Integer total;
 
     public List<Person> getPersons() {
         return persons;
@@ -28,4 +29,11 @@ public class PersonData {
         this.person = person;
     }
 
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
 }

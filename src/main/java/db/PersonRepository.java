@@ -14,4 +14,7 @@ public interface PersonRepository {
     Person exectueGetById(PreparedStatement stmt, Parameters params) throws SQLException;
     List<Person> exectueGetAll(PreparedStatement stmt) throws SQLException;
     List<Person> executeGetBySurname(PreparedStatement stmt,Parameters params) throws SQLException;
+    List<Person> executeGetBySurnameWithPagination(PreparedStatement stmt, Parameters params) throws SQLException;
+    Integer executeCountPersons(PreparedStatement stmt) throws SQLException;
+    Integer executeCountPersonsBySurname(PreparedStatement stmt, Parameters params) throws SQLException;
 }

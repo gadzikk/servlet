@@ -13,4 +13,7 @@ public interface PersonDao {
     Person getById(Parameters params) throws SQLException;
     List<Person> getAll() throws SQLException;
     List<Person> getPersonsBySurname(Parameters params) throws SQLException;
+    List<Person> getPersonBySurnameWithPagination(Parameters params) throws SQLException;
+    Integer countPersons() throws SQLException;
+    Integer countPersonsBySurname(Parameters params) throws SQLException;
 }

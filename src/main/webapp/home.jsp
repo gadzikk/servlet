@@ -17,39 +17,82 @@
 </head>
 <body>
 <center>
-    <div id="divId">
+    <div id="searchBox">
         Search : <input type="text" name="search" id="search"/></br>
         <button name="searchButton" id="searchButton">Search</button>
+        <select name="page" id="page"></select>
     </div>
-    <div id="messageDiv">
+    <div id="personDiv">
         <table></table>
     </div>
 </center>
 <script>
-    $("#searchButton").on('click', function () {
-        callAjax();
+
+    $("#page").change(function () {
+        changePersonPage();
     });
 
-    function callAjax() {
+    $("#searchButton").on('click', function () {
+        getPersonsBySurnamePag();
+    });
+
+    function getPersonsBySurnamePag() {
         $.get("${pageContext.request.contextPath}/ajax", {
-            search: $("#search").val()
+            search: $("#search").val(),
+            page: 1,
+            rest: "person",
+            method: "getbysurnamewithpagination"
         }, function (response) {
-            $("#messageDiv").find("table").html("");
-            $("#messageDiv").find("table").append("<tr>" +
+            $("#personDiv").find("table").html("");
+            $("#personDiv").find("table").append("<tr>" +
                 "<th>ID</th>" +
                 "<th>Name</th>" +
                 "<th>LastName</th>" +
                 "<th>Date</th>" +
                 "</tr>");
-            $.each(response, function (i, element) {
-                console.log(response[i].id + ' ' + response[i].name + ' ' + response[i].lastname + ' ' + response[i].date);
-                $("#messageDiv").find("table").append(
-                    "<tr><td>" + response[i].id + "</td>" +
-                    "<td>" + response[i].name + "</td>" +
-                    "<td>" + response[i].lastname + "</td>" +
-                    "<td>" + response[i].date + "</tr>");
+            $.each(response.persons, function (i, element) {
+                console.log(response.persons[i].id + ' ' + response.persons[i].name + ' ' + response.persons[i].lastname + ' ' + response.persons[i].date);
+                $("#personDiv").find("table").append(
+                    "<tr><td>" + response.persons[i].id + "</td>" +
+                    "<td>" + response.persons[i].name + "</td>" +
+                    "<td>" + response.persons[i].lastname + "</td>" +
+                    "<td>" + response.persons[i].date + "</tr>");
             });
+            $("#page").html("");
+            var iterations;
+            if (response.total % 10 == 0) {
+                iterations = (response.total / 10);
+            } else {
+                iterations = (response.total / 10) + 1;
+            }
+            for (var i = 1; i <= iterations; i++) {
+                $("#page").append("<option value=" + i + ">" + i + "</option>");
+            }
         });
+    }
+    function changePersonPage() {
+        $.get("${pageContext.request.contextPath}/ajax", {
+            search: $("#search").val(),
+            page: $("#page").val(),
+            rest: "person",
+            method: "getbysurnamewithpagination"
+        }, function (response) {
+            $("#personDiv").find("table").html("");
+            $("#personDiv").find("table").append("<tr>" +
+                "<th>ID</th>" +
+                "<th>Name</th>" +
+                "<th>LastName</th>" +
+                "<th>Date</th>" +
+                "</tr>");
+            $.each(response.persons, function (i, element) {
+                console.log(response.persons[i].id + ' ' + response.persons[i].name + ' ' + response.persons[i].lastname + ' ' + response.persons[i].date);
+                $("#personDiv").find("table").append(
+                    "<tr><td>" + response.persons[i].id + "</td>" +
+                    "<td>" + response.persons[i].name + "</td>" +
+                    "<td>" + response.persons[i].lastname + "</td>" +
+                    "<td>" + response.persons[i].date + "</tr>");
+            });
+        })
     }
 </script>
 </body>

@@ -13,4 +13,7 @@ public interface PersonService {
     Person getById(Parameters params);
     List<Person> getAll();
     List<Person> getPersonsBySurname(Parameters params);
+    List<Person> getPersonsBySurnameWithPagination(Parameters params);
+    Integer countPersons();
+    Integer countPersonsBySurname(Parameters params);
 }

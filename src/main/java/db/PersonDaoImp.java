@@ -28,7 +28,22 @@ public class PersonDaoImp implements PersonDao {
 
     public List<Person> getPersonsBySurname(Parameters params) throws SQLException {
         PreparedStatement stmt = getConn().prepareStatement("SELECT * FROM PERSON WHERE LNAME LIKE ?");
-        return repository.executeGetBySurname(stmt,params);
+        return repository.executeGetBySurname(stmt, params);
+    }
+
+    public List<Person> getPersonBySurnameWithPagination(Parameters params) throws SQLException {
+        PreparedStatement stmt = getConn().prepareStatement("SELECT * FROM PERSON WHERE LNAME LIKE ? LIMIT ? OFFSET ?");
+        return repository.executeGetBySurnameWithPagination(stmt, params);
+    }
+
+    public Integer countPersons() throws SQLException {
+        PreparedStatement stmt = getConn().prepareStatement("SELECT COUNT(*) FROM PERSON");
+        return repository.executeCountPersons(stmt);
+    }
+
+    public Integer countPersonsBySurname(Parameters params) throws SQLException {
+        PreparedStatement stmt = getConn().prepareStatement("SELECT COUNT(*) FROM PERSON WHERE LNAME LIKE ?");
+        return repository.executeCountPersonsBySurname(stmt, params);
     }
 
     private Connection getConn() {
