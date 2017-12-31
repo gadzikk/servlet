@@ -82,7 +82,7 @@ public class PersonJDBC implements PersonRepository {
     }
 
     public Integer executeCountPersonsBySurname(PreparedStatement stmt, Parameters params) throws SQLException {
-        stmt.setString(1,"%" + params.getName() + "%");
+        stmt.setString(1, "%" + params.getName() + "%");
         ResultSet rs = stmt.executeQuery();
         int total = 0;
         while (rs.next()) {

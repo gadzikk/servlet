@@ -23,6 +23,8 @@ public class AjaxServlet extends HttpServlet {
         Parameters parameters = new Parameters.Builder()
                 .name(request.getParameter("search"))
                 .page(request.getParameter("page"))
+                .orderby(request.getParameter("orderby"))
+                .ordering(request.getParameter("ordering"))
                 .build();
 
         RestGet(request, response, request.getParameter("rest"), request.getParameter("method"), parameters);
@@ -34,9 +36,16 @@ public class AjaxServlet extends HttpServlet {
                 PersonService personService = new PersonServiceImp();
                 PersonData data = new PersonData();
                 data.setPersons(personService.getPersonsBySurnameWithPagination(params));
-                data.setTotal(personService.countPersonsBySurname(params));
 
                 String json = new Gson().toJson(data);
+                response.setContentType("application/json");
+                response.getWriter().write(json);
+            }
+            if("gettotalbysurname".equals(method)){
+                PersonService personService = new PersonServiceImp();
+                int total = personService.countPersonsBySurname(params);
+
+                String json = new Gson().toJson(total);
                 response.setContentType("application/json");
                 response.getWriter().write(json);
             }

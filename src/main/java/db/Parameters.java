@@ -10,12 +10,16 @@ public class Parameters {
     private String name;
     private Boolean state;
     private Integer page;
+    private String orderby;
+    private String ordering;
 
     private Parameters(Builder builder) {
         id = builder.id;
         name = builder.name;
         state = builder.state;
         page = builder.page;
+        orderby = builder.orderby;
+        ordering = builder.ordering;
     }
 
     public Long getId() {
@@ -50,11 +54,29 @@ public class Parameters {
         this.page = page;
     }
 
+    public String getOrderby() {
+        return orderby;
+    }
+
+    public void setOrderby(String orderby) {
+        this.orderby = orderby;
+    }
+
+    public String getOrdering() {
+        return ordering;
+    }
+
+    public void ordering(String ordering) {
+        this.ordering = ordering;
+    }
+
     public static final class Builder {
         private Long id;
         private String name;
         private Boolean state;
         private Integer page;
+        private String orderby;
+        private String ordering;
 
         public Builder() {
         }
@@ -85,6 +107,22 @@ public class Parameters {
             return this;
         }
 
+        public Builder orderby(String val) {
+            orderby = "id";
+            if (StringUtils.isNotBlank(val)) {
+                orderby = val;
+            }
+            return this;
+        }
+
+        public Builder ordering(String val) {
+            ordering = "asc";
+            if (StringUtils.isNotBlank(val)) {
+                ordering = val;
+            }
+            return this;
+        }
+
         public Parameters build() {
             return new Parameters(this);
         }
@@ -97,6 +135,8 @@ public class Parameters {
                 ", name='" + name + '\'' +
                 ", state=" + state +
                 ", page=" + page +
+                ", orderby='" + orderby + '\'' +
+                ", orderering='" + ordering + '\'' +
                 '}';
     }
 }

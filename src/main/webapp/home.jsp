@@ -19,6 +19,8 @@
 <center>
     <div id="searchBox">
         Search : <input type="text" name="search" id="search"/></br>
+        <input type="hidden" name="ordering" id="ordering" value="asc"/>
+        <input type="hidden" name="lastClicked" id="lastClicked"/>
         <button name="searchButton" id="searchButton">Search</button>
         <select name="page" id="page"></select>
     </div>
@@ -27,73 +29,83 @@
     </div>
 </center>
 <script>
-
-    $("#page").change(function () {
-        changePersonPage();
-    });
-
-    $("#searchButton").on('click', function () {
-        getPersonsBySurnamePag();
-    });
-
-    function getPersonsBySurnamePag() {
-        $.get("${pageContext.request.contextPath}/ajax", {
-            search: $("#search").val(),
-            page: 1,
-            rest: "person",
-            method: "getbysurnamewithpagination"
-        }, function (response) {
-            $("#personDiv").find("table").html("");
-            $("#personDiv").find("table").append("<tr>" +
-                "<th>ID</th>" +
-                "<th>Name</th>" +
-                "<th>LastName</th>" +
-                "<th>Date</th>" +
-                "</tr>");
-            $.each(response.persons, function (i, element) {
-                console.log(response.persons[i].id + ' ' + response.persons[i].name + ' ' + response.persons[i].lastname + ' ' + response.persons[i].date);
-                $("#personDiv").find("table").append(
-                    "<tr><td>" + response.persons[i].id + "</td>" +
-                    "<td>" + response.persons[i].name + "</td>" +
-                    "<td>" + response.persons[i].lastname + "</td>" +
-                    "<td>" + response.persons[i].date + "</tr>");
-            });
-            $("#page").html("");
-            var iterations;
-            if (response.total % 10 == 0) {
-                iterations = (response.total / 10);
-            } else {
-                iterations = (response.total / 10) + 1;
-            }
-            for (var i = 1; i <= iterations; i++) {
-                $("#page").append("<option value=" + i + ">" + i + "</option>");
-            }
+        $("#page").change(function () {
+            getPersonsBySurnamePag();
         });
-    }
-    function changePersonPage() {
-        $.get("${pageContext.request.contextPath}/ajax", {
-            search: $("#search").val(),
-            page: $("#page").val(),
-            rest: "person",
-            method: "getbysurnamewithpagination"
-        }, function (response) {
-            $("#personDiv").find("table").html("");
-            $("#personDiv").find("table").append("<tr>" +
-                "<th>ID</th>" +
-                "<th>Name</th>" +
-                "<th>LastName</th>" +
-                "<th>Date</th>" +
-                "</tr>");
-            $.each(response.persons, function (i, element) {
-                console.log(response.persons[i].id + ' ' + response.persons[i].name + ' ' + response.persons[i].lastname + ' ' + response.persons[i].date);
-                $("#personDiv").find("table").append(
-                    "<tr><td>" + response.persons[i].id + "</td>" +
-                    "<td>" + response.persons[i].name + "</td>" +
-                    "<td>" + response.persons[i].lastname + "</td>" +
-                    "<td>" + response.persons[i].date + "</tr>");
+
+        $("#searchButton").on('click', function () {
+            $("#page").val(1);
+            getPersonsBySurnamePag();
+            createDynamicSelect();
+        });
+
+        $('#personDiv').on('click', 'th', function () {
+            $("#page").val(1);
+            orderingHelper($(this));
+            getPersonsBySurnamePag($(this));
+        });
+
+        function getPersonsBySurnamePag(outerThis) {
+            $.get("${pageContext.request.contextPath}/ajax", {
+                search: $("#search").val(),
+                orderby: $(outerThis).html(),
+                ordering: $("#ordering").val(),
+                page: $("#page").val(),
+                rest: "person",
+                method: "getbysurnamewithpagination"
+            }, function (response) {
+                $("#personDiv").find("table").html("");
+                $("#personDiv").find("table").append("<tr>" +
+                    "<th>ID</th>" +
+                    "<th>Name</th>" +
+                    "<th>LName</th>" +
+                    "<th>Dob</th>" +
+                    "</tr>");
+                $.each(response.persons, function (i, element) {
+                    console.log(response.persons[i].id + ' ' + response.persons[i].name + ' ' + response.persons[i].lastname + ' ' + response.persons[i].date);
+                    $("#personDiv").find("table").append(
+                        "<tr><td>" + response.persons[i].id + "</td>" +
+                        "<td>" + response.persons[i].name + "</td>" +
+                        "<td>" + response.persons[i].lastname + "</td>" +
+                        "<td>" + response.persons[i].date + "</tr>");
+                });
             });
-        })
-    }
+        }
+
+        function createDynamicSelect() {
+            $.get("${pageContext.request.contextPath}/ajax", {
+                search: $("#search").val(),
+                rest: "person",
+                method: "gettotalbysurname"
+            },function (response) {
+                console.log(response);
+                $("#page").html("");
+                var iterations;
+                if (response % 10 == 0) {
+                    iterations = (response / 10);
+                } else {
+                    iterations = (response / 10) + 1;
+                }
+                for (var i = 1; i <= iterations; i++) {
+                    $("#page").append("<option value=" + i + ">" + i + "</option>");
+                }
+            });
+        }
+
+        function orderingHelper(outerThis) {
+            if ($("#lastClicked").html() == $(outerThis).html()) {
+                if ($("#ordering").val() == "asc") {
+                    $("#ordering").val("desc");
+                }
+                else if ($("#ordering").val() == "desc") {
+                    $("#ordering").val("asc");
+                }
+            }
+            else {
+                $("#ordering").val("asc");
+            }
+            $("#lastClicked").html($(outerThis).html());
+        }
 </script>
 </body>
 </html>

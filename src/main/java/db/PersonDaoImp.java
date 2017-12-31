@@ -32,7 +32,7 @@ public class PersonDaoImp implements PersonDao {
     }
 
     public List<Person> getPersonBySurnameWithPagination(Parameters params) throws SQLException {
-        PreparedStatement stmt = getConn().prepareStatement("SELECT * FROM PERSON WHERE LNAME LIKE ? LIMIT ? OFFSET ?");
+        PreparedStatement stmt = getConn().prepareStatement("SELECT * FROM PERSON WHERE LNAME LIKE ? ORDER BY " + params.getOrderby() + " " + params.getOrdering() +  " LIMIT ? OFFSET ?");
         return repository.executeGetBySurnameWithPagination(stmt, params);
     }
 
