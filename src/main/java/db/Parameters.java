@@ -12,6 +12,8 @@ public class Parameters {
     private Integer page;
     private String orderby;
     private String ordering;
+    private String email;
+    private String password;
 
     private Parameters(Builder builder) {
         id = builder.id;
@@ -20,6 +22,8 @@ public class Parameters {
         page = builder.page;
         orderby = builder.orderby;
         ordering = builder.ordering;
+        email = builder.email;
+        password = builder.password;
     }
 
     public Long getId() {
@@ -70,6 +74,22 @@ public class Parameters {
         this.ordering = ordering;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public static final class Builder {
         private Long id;
         private String name;
@@ -77,6 +97,8 @@ public class Parameters {
         private Integer page;
         private String orderby;
         private String ordering;
+        private String email;
+        private String password;
 
         public Builder() {
         }
@@ -123,6 +145,16 @@ public class Parameters {
             return this;
         }
 
+        public Builder email(String val) {
+                email = val;
+            return this;
+        }
+
+        public Builder password(String val) {
+            password = val;
+            return this;
+        }
+
         public Parameters build() {
             return new Parameters(this);
         }
@@ -136,7 +168,9 @@ public class Parameters {
                 ", state=" + state +
                 ", page=" + page +
                 ", orderby='" + orderby + '\'' +
-                ", orderering='" + ordering + '\'' +
+                ", ordering='" + ordering + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

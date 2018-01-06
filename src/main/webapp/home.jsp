@@ -36,6 +36,7 @@
         <input type="hidden" name="lastClicked" id="lastClicked"/>
         <input type="hidden" name="page" id="page" value="1"/>
         <input type="hidden" name="orderby" id="orderby" value="id"/>
+        <input type="hidden" name="total" id="total" value="0"/>
         <button name="searchButton" id="searchButton">Search</button>
     </div>
     <div id="personDiv">
@@ -44,12 +45,18 @@
     <div id="pagination"></div>
 </center>
 <script>
+    $("#page").val(1);
+    console.log('page' + $("#page").val());
+    getPersonsBySurnamePag();
+    createDynamicPagging($("#page").val());
+
+
         $("#pagination").on('click',function (event) {
             var selectedPage = $(event.target).closest("div").html();
             $("#page").val(selectedPage);
             console.log('page' + $("#page").val());
             getPersonsBySurnamePag();
-            createDynamicPagging($("#page").val(),2);
+            paggingOnHtml($("#page").val(), 2, $("#total").val());
         });
 
         $("#searchButton").on('click', function () {
@@ -100,6 +107,7 @@
                 method: "gettotalbysurname"
             },function (response) {
                 var last = Math.round(response / 10);
+                $("#total").val(last);
                 paggingOnHtml(currentPage,level,last);
             });
         }

@@ -5,11 +5,12 @@
 ${message}
 
 <form action = "${pageContext.request.contextPath}/control" method = "GET">
-    id: <input type = "text" name = "id">
-    <br />
-    <input type = "hidden" name = "method" value="getbyid" />
-    <input type = "hidden" name = "rest" value="account" />
-    <input type = "hidden" name = "page" value="main.jsp" />
+
+    <input type = "text" name = "email"/>
+        <input type="password" name="password" />
+    <input type = "hidden" name = "rest" value="authentication" />
+    <input type = "hidden" name = "method" value="login" />
+    <input type = "hidden" name = "view" value="account.jsp" />
     <input type = "submit" value = "Submit" />
 </form>
 

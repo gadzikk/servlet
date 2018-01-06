@@ -4,10 +4,7 @@ import db.PersonDaoImp;
 import front.AccountData;
 import front.PersonData;
 import model.Account;
-import service.AccountService;
-import service.AccountServiceImp;
-import service.PersonService;
-import service.PersonServiceImp;
+import service.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,11 +25,13 @@ public class ControlServlet extends HttpServlet {
         logParameters(request);
 
         Parameters params = new Parameters.Builder()
-                .id(request.getParameter("id"))
+                .name(request.getParameter("search"))
+                .email(request.getParameter("email"))
+                .password(request.getParameter("password"))
                 .build();
 
         RestGet(request, request.getParameter("rest"), request.getParameter("method"), params);
-        forward(request.getParameter("page"), request, response);
+        forward(request.getParameter("view"), request, response);
     }
 
     private void RestGet(HttpServletRequest request, String rest, String method, Parameters params) {
@@ -49,13 +48,18 @@ public class ControlServlet extends HttpServlet {
             data.setPersons(personService.getAll());
             LOGGER.info(data.getPersons().toString());
             request.getSession().setAttribute("persondata", data);
+        } else if ("authentication".equals(rest)) {
+            AuthenticationService service = new AuthenticationServiceImp();
+            if ("login".equals(method)) {
+                request.getSession().setAttribute("authdata", service.login(params));
+            }
 
         }
     }
 
-    private void forward(String page, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (page != null) {
-            response.sendRedirect(request.getParameter("page"));
+    private void forward(String view, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (view != null) {
+            response.sendRedirect(request.getParameter("view"));
         }
     }
 
