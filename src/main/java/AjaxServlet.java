@@ -18,7 +18,6 @@ public class AjaxServlet extends HttpServlet {
     private static Logger LOGGER = Logger.getLogger(AjaxServlet.class.toString());
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        logParameters(request);
 
         Parameters parameters = new Parameters.Builder()
                 .name(request.getParameter("search"))
@@ -49,14 +48,6 @@ public class AjaxServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.getWriter().write(json);
             }
-        }
-    }
-
-    private void logParameters(HttpServletRequest request) {
-        Enumeration<String> paramsPrint = request.getParameterNames();
-        while (paramsPrint.hasMoreElements()) {
-            String paramName = paramsPrint.nextElement();
-            LOGGER.info("Parameter Name - " + paramName + ", Value - " + request.getParameter(paramName));
         }
     }
 }

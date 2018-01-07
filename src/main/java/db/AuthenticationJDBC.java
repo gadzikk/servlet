@@ -15,6 +15,9 @@ public class AuthenticationJDBC implements AuthenticationRepository {
         stmt.setString(1,params.getEmail());
         stmt.setString(2,params.getPassword());
         ResultSet rs = stmt.executeQuery();
+        if(!rs.isBeforeFirst()){
+            return null;
+        }
         Account account = new Account();
         while (rs.next()){
             account.setId(rs.getLong("id"));

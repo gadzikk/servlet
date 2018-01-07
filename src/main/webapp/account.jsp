@@ -9,15 +9,20 @@
 <html>
 <head>
     <title>Account</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
 <%
-    Account account = (Account) request.getSession().getAttribute("authdata");
+    Account account = (Account) request.getSession().getAttribute("auth");
 %>
-<p><%=account.getEmail()%> </p>
-<p><%=account.getMoney()%> </p>
-<p><%=account.getCreationDate()%> </p>
-
+<div id="account_info">
+    <table class="center">
+        <tr><td>Email:</td><td><%=account.getEmail()%></td></tr>
+        <tr><td>Your Money:</td><td><%=account.getMoney()%></td></tr>
+        <tr><td>Account Created:</td><td><%=account.getCreationDate()%></td></tr>
+    </table>
+</div>
+<a href="home.jsp">home</a>
 
 </body>
 </html>

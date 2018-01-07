@@ -22,7 +22,6 @@ public class ControlServlet extends HttpServlet {
     private static Logger LOGGER = Logger.getLogger(ControlServlet.class.toString());
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logParameters(request);
 
         Parameters params = new Parameters.Builder()
                 .name(request.getParameter("search"))
@@ -51,9 +50,8 @@ public class ControlServlet extends HttpServlet {
         } else if ("authentication".equals(rest)) {
             AuthenticationService service = new AuthenticationServiceImp();
             if ("login".equals(method)) {
-                request.getSession().setAttribute("authdata", service.login(params));
+                request.getSession().setAttribute("auth", service.login(params));
             }
-
         }
     }
 
@@ -62,13 +60,4 @@ public class ControlServlet extends HttpServlet {
             response.sendRedirect(request.getParameter("view"));
         }
     }
-
-    private void logParameters(HttpServletRequest request) {
-        Enumeration<String> paramsPrint = request.getParameterNames();
-        while (paramsPrint.hasMoreElements()) {
-            String paramName = paramsPrint.nextElement();
-            LOGGER.info("Parameter Name - " + paramName + ", Value - " + request.getParameter(paramName));
-        }
-    }
-
 }

@@ -15,18 +15,7 @@
             integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
             crossorigin="anonymous"></script>
     <script src="global.js" type="text/javascript"></script>
-
-    <style>
-        #pagination div {
-            display: inline-block;
-            background-color: aliceblue;
-            border: 1px solid aliceblue;
-            padding: 5px;
-        }
-        #pagination div:hover{
-            border: 1px solid lightseagreen;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 <center>
@@ -43,25 +32,22 @@
         <table></table>
     </div>
     <div id="pagination"></div>
+    <a href="account.jsp">account</a>
 </center>
 <script>
     $("#page").val(1);
-    console.log('page' + $("#page").val());
     getPersonsBySurnamePag();
     createDynamicPagging($("#page").val());
-
 
         $("#pagination").on('click',function (event) {
             var selectedPage = $(event.target).closest("div").html();
             $("#page").val(selectedPage);
-            console.log('page' + $("#page").val());
             getPersonsBySurnamePag();
             paggingOnHtml($("#page").val(), 2, $("#total").val());
         });
 
         $("#searchButton").on('click', function () {
             $("#page").val(1);
-            console.log('page' + $("#page").val());
             getPersonsBySurnamePag();
             createDynamicPagging($("#page").val());
         });
@@ -111,9 +97,6 @@
                 paggingOnHtml(currentPage,level,last);
             });
         }
-
-
-
 </script>
 </body>
 </html>
