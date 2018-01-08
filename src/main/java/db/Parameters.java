@@ -2,6 +2,8 @@ package db;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
+
 /**
  * Created by gadzik on 18.12.17.
  */
@@ -14,6 +16,9 @@ public class Parameters {
     private String ordering;
     private String email;
     private String password;
+    private Long senderId;
+    private Long receiverId;
+    private BigDecimal money;
 
     private Parameters(Builder builder) {
         id = builder.id;
@@ -24,6 +29,9 @@ public class Parameters {
         ordering = builder.ordering;
         email = builder.email;
         password = builder.password;
+        senderId = builder.senderId;
+        receiverId = builder.receiverId;
+        money = builder.money;
     }
 
     public Long getId() {
@@ -90,6 +98,31 @@ public class Parameters {
         this.password = password;
     }
 
+
+    public Long getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(Long senderId) {
+        this.senderId = senderId;
+    }
+
+    public Long getReceiverId() {
+        return receiverId;
+    }
+
+    public void setReceiverId(Long receiverId) {
+        this.receiverId = receiverId;
+    }
+
+    public BigDecimal getMoney() {
+        return money;
+    }
+
+    public void setMoney(BigDecimal money) {
+        this.money = money;
+    }
+
     public static final class Builder {
         private Long id;
         private String name;
@@ -99,6 +132,9 @@ public class Parameters {
         private String ordering;
         private String email;
         private String password;
+        private Long senderId;
+        private Long receiverId;
+        private BigDecimal money;
 
         public Builder() {
         }
@@ -146,12 +182,34 @@ public class Parameters {
         }
 
         public Builder email(String val) {
-                email = val;
+            email = val;
             return this;
         }
 
         public Builder password(String val) {
             password = val;
+            return this;
+        }
+
+        public Builder senderId(String val) {
+            if (StringUtils.isNotBlank(val)) {
+                senderId = Long.parseLong(val);
+            }
+            return this;
+        }
+
+        public Builder receiverId(String val) {
+            if (StringUtils.isNotBlank(val)) {
+                receiverId = Long.parseLong(val);
+            }
+            return this;
+        }
+
+        public Builder money(String val) {
+            money = BigDecimal.ZERO;
+            if (StringUtils.isNotBlank(val)) {
+                money = new BigDecimal(val);
+            }
             return this;
         }
 
@@ -171,6 +229,9 @@ public class Parameters {
                 ", ordering='" + ordering + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", senderId=" + senderId +
+                ", receiverId=" + receiverId +
+                ", money=" + money +
                 '}';
     }
 }
