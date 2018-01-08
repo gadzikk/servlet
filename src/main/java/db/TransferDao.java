@@ -9,5 +9,6 @@ import java.sql.SQLException;
 public interface TransferDao {
     void outgoingTransfer(Parameters params) throws SQLException;
     void incomingTransfer(Parameters params) throws SQLException;
+    void saveTransfer(Parameters params) throws SQLException;
 
 }

@@ -9,4 +9,5 @@ import db.Parameters;
 public interface TransferService {
     void outgoingTransfer(Parameters params);
     void incomingTransfer(Parameters params);
+    void saveTransfer(Parameters params);
 }

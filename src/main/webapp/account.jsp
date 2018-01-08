@@ -27,7 +27,7 @@
     <form action = "${pageContext.request.contextPath}/ajax" method = "POST">
         Receiver ID: <input type="text" name="receiver_id" />
         Money: <input type = "number" name = "money"/>
-        <input type = "hidden" name = "sender_id" value="<%=account.getId()%>" />
+        <input type = "hidden" name = "id" value="<%=account.getId()%>" />
         <input type = "hidden" name = "rest" value="transfer" />
         <input type = "hidden" name = "method" value="outgoing" />
         <input type = "hidden" name = "view" value="account.jsp" />

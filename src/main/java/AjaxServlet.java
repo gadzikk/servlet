@@ -1,10 +1,10 @@
 import com.google.gson.Gson;
 import db.Parameters;
 import front.PersonData;
-import service.PersonService;
-import service.PersonServiceImp;
-import service.TransferService;
-import service.TransferServiceImp;
+import front.TransferData;
+import model.Account;
+import model.Customer;
+import service.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,11 +23,11 @@ public class AjaxServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         Parameters parameters = new Parameters.Builder()
+                .id(request.getParameter("id"))
                 .name(request.getParameter("search"))
                 .page(request.getParameter("page"))
                 .orderby(request.getParameter("orderby"))
                 .ordering(request.getParameter("ordering"))
-                .senderId(request.getParameter("sender_id"))
                 .receiverId(request.getParameter("receiver_id"))
                 .money(request.getParameter("money"))
                 .build();
@@ -56,9 +56,21 @@ public class AjaxServlet extends HttpServlet {
             }
         } else if ("transfer".equals(rest)) {
             TransferService transferService = new TransferServiceImp();
+            AccountService accountService = new AccountServiceImp();
+            ValidationService validationService = new ValidationServiceImp();
+            OperationService operationService = new OperationServiceImp();
             if ("outgoing".equals(method)) {
+                Account account = accountService.getById(params);
+                if (!validationService.validateOutgoingMoney(account.getMoney(), params.getMoney())) {
+                    response.sendRedirect("error_outgoingmoney.jsp");
+                    return;
+                }
                 transferService.outgoingTransfer(params);
                 transferService.incomingTransfer(params);
+                transferService.saveTransfer(params);
+                operationService.saveOperation(params.getId(), "OUTGOING_TRANSFER", params.getMoney());
+                operationService.saveOperation(params.getReceiverId(), "INCOMING_TRANSFER", params.getMoney());
+
                 String json = new Gson().toJson(1);
                 response.setContentType("application/json");
                 response.getWriter().write(json);

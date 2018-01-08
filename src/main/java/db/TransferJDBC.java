@@ -9,14 +9,20 @@ import java.sql.SQLException;
 public class TransferJDBC implements TransferRepository {
     public void executeOutgoingTransfer(PreparedStatement stmt, Parameters params) throws SQLException {
         stmt.setBigDecimal(1, params.getMoney());
-        stmt.setLong(2, params.getSenderId());
+        stmt.setLong(2, params.getId());
         stmt.executeUpdate();
-
     }
 
     public void executeIncomingTransfer(PreparedStatement stmt, Parameters params) throws SQLException {
         stmt.setBigDecimal(1, params.getMoney());
         stmt.setLong(2, params.getReceiverId());
+        stmt.executeUpdate();
+    }
+
+    public void executeSaveTransfer(PreparedStatement stmt, Parameters params) throws SQLException {
+        stmt.setLong(1,params.getId());
+        stmt.setLong(2,params.getReceiverId());
+        stmt.setBigDecimal(3,params.getMoney());
         stmt.executeUpdate();
     }
 }

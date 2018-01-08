@@ -1,9 +1,6 @@
 package db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Created by gadzik on 07.01.18.
@@ -26,6 +23,13 @@ public class TransferDaoImp implements TransferDao {
         commitClose(stmt);
     }
 
+    public void saveTransfer(Parameters params) throws SQLException {
+        conn = getConn();
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO TRANSFER (ID,SENDER_ID,RECEIVER_ID,TRANSFERED_MONEY,CREATION_DATE) VALUES (nextval('transfer_id_seq') ,?,?,?,CURRENT_TIMESTAMP)");
+        repository.executeSaveTransfer(stmt,params);
+        commitClose(stmt);
+    }
+
     private static Connection getConn() {
         final String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
         final String USER = "postgres";
@@ -38,7 +42,6 @@ public class TransferDaoImp implements TransferDao {
             try {
                 Class.forName("org.postgresql.Driver");
                 conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                conn.setAutoCommit(false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -47,7 +50,6 @@ public class TransferDaoImp implements TransferDao {
     }
 
     private void commitClose(PreparedStatement stmt) throws SQLException {
-        conn.commit();
         stmt.close();
         conn.close();
         conn = null;

@@ -32,3 +32,13 @@ a:hover {
 #account_info table {
     color: saddlebrown;
 }
+
+#err {
+    color: red;
+    text-align: center;
+}
+
+#err p {
+    color: black;
+    text-align: center;
+}

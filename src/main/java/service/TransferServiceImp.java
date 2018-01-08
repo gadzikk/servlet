@@ -28,4 +28,12 @@ public class TransferServiceImp implements TransferService {
             e.printStackTrace();
         }
     }
+
+    public void saveTransfer(Parameters params) {
+        try {
+            transferDao.saveTransfer(params);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
