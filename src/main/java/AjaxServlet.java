@@ -60,9 +60,14 @@ public class AjaxServlet extends HttpServlet {
             ValidationService validationService = new ValidationServiceImp();
             OperationService operationService = new OperationServiceImp();
             if ("outgoing".equals(method)) {
-                Account account = accountService.getById(params);
-                if (!validationService.validateOutgoingMoney(account.getMoney(), params.getMoney())) {
+                Account sender = accountService.getById(params.getId());
+                if (!validationService.validateOutgoingMoney(sender.getMoney(), params.getMoney())) {
                     response.sendRedirect("error_outgoingmoney.jsp");
+                    return;
+                }
+                Account receiver = accountService.getById(params.getReceiverId());
+                if (receiver == null) {
+                    response.sendRedirect("error_404notfound.jsp");
                     return;
                 }
                 transferService.outgoingTransfer(params);
@@ -71,7 +76,13 @@ public class AjaxServlet extends HttpServlet {
                 operationService.saveOperation(params.getId(), "OUTGOING_TRANSFER", params.getMoney());
                 operationService.saveOperation(params.getReceiverId(), "INCOMING_TRANSFER", params.getMoney());
 
-                String json = new Gson().toJson(1);
+                TransferData data = new TransferData.Builder()
+                        .sender(new Customer(sender.getId(), sender.getEmail()))
+                        .receiver(new Customer(receiver.getId(), receiver.getEmail()))
+                        .money(params.getMoney())
+                        .build();
+
+                String json = new Gson().toJson(data);
                 response.setContentType("application/json");
                 response.getWriter().write(json);
             }

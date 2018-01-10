@@ -8,8 +8,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Account</title>
     <link rel="stylesheet" type="text/css" href="style.css"/>
+    <script
+            src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous"></script>
+    <script src="global.js" type="text/javascript"></script>
 </head>
 <body>
 <%
@@ -24,16 +30,44 @@
 </div>
 
 <div id="transfer">
-    <form action = "${pageContext.request.contextPath}/ajax" method = "POST">
-        Receiver ID: <input type="text" name="receiver_id" />
-        Money: <input type = "number" name = "money"/>
-        <input type = "hidden" name = "id" value="<%=account.getId()%>" />
-        <input type = "hidden" name = "rest" value="transfer" />
-        <input type = "hidden" name = "method" value="outgoing" />
-        <input type = "hidden" name = "view" value="account.jsp" />
-        <input type = "submit" value = "Submit" />
+    <form id="transferform" action = "${pageContext.request.contextPath}/ajax" method = "POST">
+        Receiver ID: <input type="text" id="receiver_id" name="receiver_id" />
+        Money: <input type = "number" id="money" name = "money"/>
+        <input type = "hidden" id="id" name = "id" value="<%=account.getId()%>" />
+        <input type = "hidden" id="rest" name = "rest" value="transfer" />
+        <input type = "hidden" id="method" name = "method" value="outgoing" />
+        <input type = "hidden" id="view" name = "view" value="transferhistory.jsp" />
+        <%--<input type = "submit" value = "Submit" />--%>
+        <input type='button' value='Submit form' onClick='submitDetailsForm()' />
     </form>
 </div>
-<a href="home.jsp">home</a>
+<div><a href="home.jsp">home</a></div>
+<div id="transferDone">
+</div>
+
 </body>
+<script>
+$("#transferDone").hide();
+
+    function submitDetailsForm()  {
+            $.post("${pageContext.request.contextPath}/ajax", {
+                receiver_id: $("#receiver_id").val(),
+                money: $("#money").val(),
+                id: $("#id").val(),
+                rest:$("#rest").val(),
+                method:$("#method").val(),
+                view:$("#view").val()
+            },function (response) {
+//                window.location.href = "http://localhost:8080/servlets/transferhistory.jsp";
+                $("#transferDone").html("");
+                $("#transferDone").append("<table class='center' id='transfertable'>" +
+                    "<tr><td>SENDER: "+ response.sender.email +"</td></tr>" +
+                    "<tr><td>RECEIVER: "+ response.receiver.email +"</td></tr>"+
+                    "<tr><td>MONEY: "+ response.money +"</td></tr>" +
+                    "</table>");
+                $("#transferDone").slideDown("slow");
+                $("#transferDone").append("<a href=transferhistory.jsp>transferhistory</a>");
+            });
+        }
+</script>
 </html>

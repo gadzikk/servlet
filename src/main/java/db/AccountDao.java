@@ -11,6 +11,6 @@ import java.util.List;
  */
 public interface AccountDao {
 
-    Account getById(Parameters params) throws SQLException;
+    Account getById(Long id) throws SQLException;
     List<Account> getAll() throws SQLException;
 }

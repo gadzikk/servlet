@@ -14,9 +14,9 @@ import java.util.List;
 public class AccountServiceImp implements AccountService {
     private AccountDao accountDao = new AccountDaoImp();
 
-    public Account getById(Parameters params) {
+    public Account getById(Long id) {
         try {
-            return accountDao.getById(params);
+            return accountDao.getById(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -13,10 +13,13 @@ import java.util.List;
  */
 public class AccountJDBC implements AccountRepository {
 
-    public Account getById(PreparedStatement stmt, Parameters params) throws SQLException {
-        stmt.setLong(1, params.getId());
+    public Account getById(PreparedStatement stmt, Long id) throws SQLException {
+        stmt.setLong(1, id);
         Account account = new Account();
         ResultSet rs = stmt.executeQuery();
+        if (!rs.isBeforeFirst()) {
+            return null;
+        }
         while (rs.next()) {
             account.setId(rs.getLong("id"));
             account.setEmail(rs.getString("email"));

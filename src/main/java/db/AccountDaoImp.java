@@ -1,20 +1,18 @@
 package db;
 
-import front.AccountData;
 import model.Account;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public class AccountDaoImp implements  AccountDao{
+public class AccountDaoImp implements AccountDao {
 
     private AccountRepository accountRepository = new AccountJDBC();
     private static Connection conn;
 
-    public Account getById(Parameters params) throws SQLException {
+    public Account getById(Long id) throws SQLException {
         PreparedStatement stmt = getConn().prepareStatement("SELECT * FROM  ACCOUNT where id = ?");
-        return accountRepository.getById(stmt, params);
+        return accountRepository.getById(stmt, id);
     }
 
     public List<Account> getAll() throws SQLException {

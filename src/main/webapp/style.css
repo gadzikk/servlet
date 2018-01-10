@@ -42,3 +42,10 @@ a:hover {
     color: black;
     text-align: center;
 }
+#transferDone {
+    border: 1px solid gold;
+}
+
+#transferDone #transfertable {
+    border: 1px solid saddlebrown;
+}
