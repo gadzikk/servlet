@@ -4,6 +4,7 @@ import front.PersonData;
 import front.TransferData;
 import model.Account;
 import model.Customer;
+import model.Transfer;
 import service.*;
 
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -83,6 +85,18 @@ public class AjaxServlet extends HttpServlet {
                         .build();
 
                 String json = new Gson().toJson(data);
+                response.setContentType("application/json");
+                response.getWriter().write(json);
+            } else if("getbyaccountwithpagination".equals(method)) {
+                List<Transfer> transfers = transferService.getByAccountWithPagination(params);
+
+                String json = new Gson().toJson(transfers);
+                response.setContentType("application/json");
+                response.getWriter().write(json);
+            }else if("gettotalbyaccount".equals(method)){
+                int total = transferService.countByAccount(params);
+
+                String json = new Gson().toJson(total);
                 response.setContentType("application/json");
                 response.getWriter().write(json);
             }

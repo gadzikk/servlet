@@ -3,8 +3,10 @@ package service;
 import db.Parameters;
 import db.TransferDao;
 import db.TransferDaoImp;
+import model.Transfer;
 
 import java.sql.SQLException;
+import java.util.List;
 
 
 /**
@@ -35,5 +37,23 @@ public class TransferServiceImp implements TransferService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Transfer> getByAccountWithPagination(Parameters params) {
+        try {
+            return transferDao.getByAccountWithPagination(params);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int countByAccount(Parameters params) {
+        try {
+            return transferDao.countByAccount(params);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }
